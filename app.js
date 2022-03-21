@@ -6,8 +6,8 @@ app.get('/', (req, res) => {
   res.status(200).json({ message: 'Welcome to the server side' });
 });
 
-app.post('/',(req,res) => {
-    res.send("You can send data to this route");
+app.post('/', (req, res) => {
+  res.send('You can send data to this route');
 });
 
 const port = 3000;
