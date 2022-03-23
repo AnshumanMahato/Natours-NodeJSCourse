@@ -18,6 +18,7 @@ const tours = JSON.parse(
 );
 
 app.get('/api/v1/tours', (req, res) => {
+  console.log(req.query);
   res.status(200).json({
     status: 'success',
     results: tours.length,
@@ -41,7 +42,6 @@ app.post('/api/v1/tours', (req, res) => {
     `${__dirname}/dev-data/data/tours-simple.json`,
     JSON.stringify(tours),
     (err) => {
-
       if (err) return res.status(500).send('Error Occured');
 
       res.status(201).json({
@@ -50,9 +50,21 @@ app.post('/api/v1/tours', (req, res) => {
           ...newTour,
         },
       });
-      
     }
   );
+});
+
+app.get('/api/v1/tours/:id', (req, res) => {
+  const tour = tours.find((el) => el.id === +req.params.id);
+
+  if (!tour) return res.status(404).send('No tours found');
+  
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour,
+    },
+  });
 });
 
 const port = 3000;
