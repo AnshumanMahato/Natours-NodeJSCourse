@@ -1,4 +1,3 @@
-
 //module import
 const fs = require('fs');
 
@@ -96,6 +95,40 @@ const deleteTour = (req, res) => {
   });
 };
 
+const getAllUsers = (req,res) => {
+  res.status(500).json({
+    status:"error",
+    message: "this route has not been implemented"
+  });
+};
+
+const addUser = (req,res) => {
+  res.status(500).json({
+    status:"error",
+    message: "this route has not been implemented"
+  });
+};
+
+const getUser = (req,res) => {
+  res.status(500).json({
+    status:"error",
+    message: "this route has not been implemented"
+  });
+};
+
+const updateUser = (req,res) => {
+  res.status(500).json({
+    status:"error",
+    message: "this route has not been implemented"
+  });
+};
+const deleteUser = (req,res) => {
+  res.status(500).json({
+    status:"error",
+    message: "this route has not been implemented"
+  });
+};
+
 //Route handling with individual route methods
 
 // app.get('/api/v1/tours', getAllTours);
@@ -107,15 +140,27 @@ const deleteTour = (req, res) => {
 
 //Route handling with route method
 //Routes
-app.route('/api/v1/tours')
-    .get(getAllTours)
-    .post(addTour);
+app
+  .route('/api/v1/tours')
+  .get(getAllTours)
+  .post(addTour);
 
-app.route('/api/v1/tours/:id')
-    .get(getTour)
-    .patch(updateTour)
-    .delete(deleteTour);
+app
+  .route('/api/v1/tours/:id')
+  .get(getTour)
+  .patch(updateTour)
+  .delete(deleteTour);
 
+app
+  .route('/api/v1/users')
+  .get(getAllUsers)
+  .post(addUser);
+
+app
+  .route('/api/v1/users/:id')
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser);
 
 //Server initiation
 const port = 3000;
