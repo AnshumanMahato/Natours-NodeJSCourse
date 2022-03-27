@@ -1,14 +1,17 @@
 const express = require('express');
-const fs = require('fs');
-
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
-);
+const tourController = require('../controllers/tourController');
 
 const router = express.Router();
 
-router.route('/').get(getAllTours).post(addTour);
+router
+    .route('/')
+    .get(tourController.getAllTours)
+    .post(tourController.addTour);
 
-router.route('/:id').get(getTour).patch(updateTour).delete(deleteTour);
+router
+  .route('/:id')
+  .get(tourController.getTour)
+  .patch(tourController.updateTour)
+  .delete(tourController.deleteTour);
 
 module.exports = router;
