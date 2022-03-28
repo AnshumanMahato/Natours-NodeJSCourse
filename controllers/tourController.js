@@ -1,4 +1,4 @@
-/* eslint-disable node/no-unsupported-features/es-syntax */
+/* eslint-disable  */
 const fs = require('fs');
 
 const tours = JSON.parse(
