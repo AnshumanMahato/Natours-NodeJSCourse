@@ -1,21 +1,4 @@
-/* eslint-disable  */
-const fs = require('fs');
-
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
-);
-
-exports.checkid = (req, res, next, val) => {
-  console.log(`id is ${val}`);
-  const id = +req.params.id;
-  if (id < 0 || id > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    });
-  }
-  next();
-};
+const Tour = require('./../models/tourModel');
 
 exports.checkTourData = (req, res, next) => {
   console.log(req.body);
@@ -30,48 +13,31 @@ exports.checkTourData = (req, res, next) => {
 
 exports.getAllTours = (req, res) => {
   res.status(200).json({
-    status: 'success',
-    results: tours.length,
-    data: {
-      tours
-    }
+    status: 'success'
+    // results: tours.length,
+    // data: {
+    //   tours
+    // }
   });
 };
 
 exports.getTour = (req, res) => {
-  const tour = tours.find(el => el.id === +req.params.id);
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour
-    }
-  });
+  // const tour = tours.find(el => el.id === +req.params.id);
+  // res.status(200).json({
+  //   status: 'success',
+  //   data: {
+  //     tour
+  //   }
+  // });
 };
 
 exports.addTour = (req, res) => {
-  const id = tours.length;
-
-  const newTour = {
-    id,
-    ...req.body
-  };
-
-  tours.push(newTour);
-
-  fs.writeFile(
-    `${__dirname}/../dev-data/data/tours-simple.json`,
-    JSON.stringify(tours),
-    err => {
-      if (err) return res.status(500).send('Error Occured');
-
-      res.status(201).json({
-        status: 'success',
-        data: {
-          ...newTour
-        }
-      });
-    }
-  );
+  // res.status(201).json({
+  //   status: 'success',
+  //   data: {
+  //     ...newTour
+  //   }
+  // });
 };
 
 exports.updateTour = (req, res) => {
