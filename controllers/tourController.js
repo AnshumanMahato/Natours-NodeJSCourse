@@ -2,7 +2,27 @@ const Tour = require('./../models/tourModel');
 
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    //BUILDING QUERY
+    const queryObj = { ...req.query }; // hard copy
+
+    const excludeFields = ['page', 'sort', 'limit', 'fields'];
+    excludeFields.forEach(el => delete queryObj[el]);
+
+    const query = Tour.find(queryObj);
+    /* 
+    This statement above builds the query object. Awaiting this object executes the query on the DB.
+    This can be useful if we want to attach futher queries like where() or lt() or lte()...
+    Ex: - query
+            .where("duration")
+            .equals(5)
+            .where("difficulty")
+            .equals("easy")
+    */
+
+    //EXECUTING QUERY
+    const tours = await query;
+
+    //SENDING RESPONSE
     res.status(200).json({
       status: 'success',
       results: tours.length,
