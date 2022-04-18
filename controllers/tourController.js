@@ -22,6 +22,15 @@ exports.getAllTours = async (req, res) => {
     } else {
       query = query.sort('-createdAt');
     }
+
+    //LIMITING FIELDS
+
+    if (req.query.fields) {
+      const fields = req.query.fields.split(',').join(' ');
+      query = query.select(fields);
+    } else {
+      query = query.select('-__v');
+    }
     /* 
     This statement above builds the query object. Awaiting this object executes the query on the DB.
     This can be useful if we want to attach futher queries like where() or lt() or lte()...
