@@ -2,7 +2,6 @@ const Tour = require('./../models/tourModel');
 
 exports.getAllTours = async (req, res) => {
   try {
-    console.log(req.query);
     //BUILDING QUERY
     const queryObj = { ...req.query }; // hard copy
 
@@ -13,7 +12,16 @@ exports.getAllTours = async (req, res) => {
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, match => `$${match}`);
 
-    const query = Tour.find(JSON.parse(queryStr));
+    let query = Tour.find(JSON.parse(queryStr));
+
+    //SORTING
+
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(',').join(' ');
+      query = query.sort(sortBy);
+    } else {
+      query = query.sort('-createdAt');
+    }
     /* 
     This statement above builds the query object. Awaiting this object executes the query on the DB.
     This can be useful if we want to attach futher queries like where() or lt() or lte()...
