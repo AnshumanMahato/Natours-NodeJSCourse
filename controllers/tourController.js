@@ -31,6 +31,12 @@ exports.getAllTours = async (req, res) => {
     } else {
       query = query.select('-__v');
     }
+
+    //PAGINATION
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+    query = query.skip(skip).limit(limit);
     /* 
     This statement above builds the query object. Awaiting this object executes the query on the DB.
     This can be useful if we want to attach futher queries like where() or lt() or lte()...
