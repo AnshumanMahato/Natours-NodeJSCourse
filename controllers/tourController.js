@@ -7,55 +7,67 @@ exports.aliasTop5 = (req, res, next) => {
   next();
 };
 
-exports.getAllTours = async (req, res) => {
-  try {
-    //BUILDING QUERY
-    const queryObj = { ...req.query }; // hard copy
+class APIFeatures {
+  constructor(query, queryString) {
+    this.query = query;
+    this.queryString = queryString;
+    this.queryObj = { ...queryString };
 
     const excludeFields = ['page', 'sort', 'limit', 'fields'];
-    excludeFields.forEach(el => delete queryObj[el]);
+    excludeFields.forEach(el => delete this.queryObj[el]);
+  }
 
-    //FILTERING
-    let queryStr = JSON.stringify(queryObj);
+  filter() {
+    let queryStr = JSON.stringify(this.queryObj);
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, match => `$${match}`);
 
-    let query = Tour.find(JSON.parse(queryStr));
+    this.query = this.query.find(JSON.parse(queryStr));
 
-    //SORTING
+    return this;
+  }
 
-    if (req.query.sort) {
-      const sortBy = req.query.sort.split(',').join(' ');
-      query = query.sort(sortBy);
+  sort() {
+    if (this.queryString.sort) {
+      const sortBy = this.queryString.sort.split(',').join(' ');
+      this.query = this.query.sort(sortBy);
     } else {
-      query = query.sort('-createdAt');
+      this.query = this.query.sort('-createdAt');
     }
 
-    //LIMITING FIELDS
+    return this;
+  }
 
-    if (req.query.fields) {
-      const fields = req.query.fields.split(',').join(' ');
-      query = query.select(fields);
+  fields() {
+    if (this.queryString.fields) {
+      const fields = this.queryString.fields.split(',').join(' ');
+      this.query = this.query.select(fields);
     } else {
-      query = query.select('-__v');
+      this.query = this.query.select('-__v');
     }
 
-    //PAGINATION
-    const page = req.query.page * 1 || 1;
-    const limit = req.query.limit * 1 || 100;
+    return this;
+  }
+
+  pagination() {
+    const page = this.queryString.page * 1 || 1;
+    const limit = this.queryString.limit * 1 || 100;
     const skip = (page - 1) * limit;
-    query = query.skip(skip).limit(limit);
-    /* 
-    This statement above builds the query object. Awaiting this object executes the query on the DB.
-    This can be useful if we want to attach futher queries like where() or lt() or lte()...
-    Ex: - query
-            .where("duration")
-            .equals(5)
-            .where("difficulty")
-            .equals("easy")
-    */
+    this.query = this.query.skip(skip).limit(limit);
 
+    return this;
+  }
+}
+
+exports.getAllTours = async (req, res) => {
+  try {
     //EXECUTING QUERY
-    const tours = await query;
+    const apiFeatures = new APIFeatures(Tour.find(), req.query)
+      .filter()
+      .sort()
+      .fields()
+      .pagination();
+
+    const tours = await apiFeatures.query;
 
     //SENDING RESPONSE
     res.status(200).json({
