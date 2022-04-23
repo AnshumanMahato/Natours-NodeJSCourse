@@ -14,6 +14,8 @@ router
   .route('/top-5-cheap')
   .get(tourController.aliasTop5, tourController.getAllTours);
 
+router.route('/tour-stats').get(tourController.stats);
+
 router
   .route('/:id')
   .get(tourController.getTour)

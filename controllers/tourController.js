@@ -101,3 +101,45 @@ exports.deleteTour = async (req, res) => {
     });
   }
 };
+
+exports.stats = async (req, res) => {
+  try {
+    const stats = await Tour.aggregate([
+      { $match: { ratingsAverage: { $gte: 4.5 } } },
+      {
+        $group: {
+          _id: { $toUpper: '$difficulty' },
+          numTours: { $sum: 1 },
+          numRatings: { $sum: '$ratingsQuantity' },
+          avgRatings: { $avg: '$ratingsAverage' },
+          avgPrice: { $avg: '$price' },
+          minPrice: { $max: '$price' },
+          maxPrice: { $min: '$price' }
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          numTours: 1,
+          numRatings: 1,
+          avgRatings: { $round: ['$avgRatings', 2] },
+          avgPrice: { $round: ['$avgPrice', 2] },
+          minPrice: 1,
+          maxPrice: 1
+        }
+      },
+      { $sort: { avgPrice: 1 } }
+    ]);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        stats
+      }
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      error: err
+    });
+  }
+};
