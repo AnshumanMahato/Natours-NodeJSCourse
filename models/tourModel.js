@@ -14,6 +14,10 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'A tour must have a duration.']
     },
+    secretTour: {
+      type: Boolean,
+      default: false
+    },
     maxGroupSize: {
       type: Number,
       required: [true, 'A tour must have a group size.']
@@ -67,8 +71,8 @@ const tourSchema = new mongoose.Schema(
 tourSchema.virtual('durationWeeks', function() {
   return this.duration / 7;
 });
-//Documen Middleware: runs at save() and create()
 
+//Document Middleware: runs at save() and create()
 tourSchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true });
   next();
@@ -78,6 +82,22 @@ tourSchema.pre('save', function(next) {
 //   console.log(doc);
 //   next();
 // });
+
+//Query Middleware: runs at find()
+tourSchema.pre(/^find/, function(next) {
+  this.find({ secretTour: { $ne: true } });
+  next();
+});
+
+//post works similarly but after the query execution
+
+//Aggregate Middleware: runs on aggregate()
+tourSchema.pre('aggregate', function(next) {
+  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+
+  // console.log(this.pipeline());
+  next();
+});
 
 const Tour = mongoose.model('Tour', tourSchema);
 
