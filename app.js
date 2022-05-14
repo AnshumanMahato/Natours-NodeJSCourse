@@ -38,9 +38,11 @@ app.all('*', (req, res, next) => {
   //   status: 'fail',
   //   message: `Can't find route ${req.originalUrl}`
   // });
+
   // const err = new Error(`Can't find route ${req.originalUrl}`);
   // err.status = 'fail';
   // err.statusCode = 404;
+
   next(new AppError(`Can't find route ${req.originalUrl}`, 404));
 });
 
