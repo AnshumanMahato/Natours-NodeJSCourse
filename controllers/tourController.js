@@ -1,11 +1,6 @@
 const Tour = require('./../models/tourModel');
 const APIFeatures = require('./../utils/apiFeatures');
-
-const catchAsync = fn => {
-  return (req, res, next) => {
-    fn(req, res, next).catch(next);
-  };
-};
+const catchAsync = require('./../utils/catchAsync');
 
 exports.aliasTop5 = (req, res, next) => {
   req.query.limit = '5';
