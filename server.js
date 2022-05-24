@@ -12,12 +12,21 @@ mongoose
   .then(() => {
     // eslint-disable-next-line no-console
     console.log('DB Connected');
-  })
-  .catch();
+  });
 
 //Server initiation
 const port = process.env.PORT;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log(`App running on ${port}`);
+});
+
+//Unhandled Promise Rejection
+
+process.on('unhandledRejection', err => {
+  console.log(`An error occured: ${err.message} `);
+  server.close(() => {
+    console.log('Shutting Down');
+    process.exit(1);
+  });
 });
