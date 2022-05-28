@@ -4,11 +4,11 @@ const app = require('./app');
 
 //Unhandled Promise Rejection
 
-// process.on('uncaughtException', err => {
-//   console.log(`An error occured: ${err.message} `);
-//   console.log('Shutting Down');
-//   process.exit(1);
-// });
+process.on('uncaughtException', err => {
+  console.log(`An error occured: ${err.message} `);
+  console.log('Shutting Down');
+  process.exit(1);
+});
 
 mongoose
   .connect(process.env.DB, {
@@ -29,10 +29,10 @@ const server = app.listen(port, () => {
   console.log(`App running on ${port}`);
 });
 
-// process.on('unhandledRejection', err => {
-//   console.log(`An error occured: ${err.message} `);
-//   server.close(() => {
-//     console.log('Shutting Down');
-//     process.exit(1);
-//   });
-// });
+process.on('unhandledRejection', err => {
+  console.log(`An error occured: ${err.message} `);
+  server.close(() => {
+    console.log('Shutting Down');
+    process.exit(1);
+  });
+});
