@@ -51,3 +51,22 @@ exports.login = catchAsync(async (req, res, next) => {
     token
   });
 });
+
+exports.protect = catchAsync(async function(req, res, next) {
+  // 1 Get Token from header
+  let token;
+  const { authorization } = req.headers;
+  if (authorization && authorization.startsWith('Bearer')) {
+    token = authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    return next(new AppError('Please Login to Continue', 401));
+  }
+  // 2 Verify Token
+
+  // 3 Verify if user exits
+
+  // 4 Verify if user has changed passwords
+  next();
+});
