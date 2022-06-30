@@ -70,6 +70,14 @@ exports.protect = catchAsync(async function(req, res, next) {
   console.log(decoded);
 
   // 3 Verify if user exits
+  const user = await User.findById(decoded.id);
+  if (!user)
+    return next(
+      new AppError(
+        'The user belonging to the token does not exist. Please login with an existing id',
+        401
+      )
+    );
 
   // 4 Verify if user has changed passwords
   next();
