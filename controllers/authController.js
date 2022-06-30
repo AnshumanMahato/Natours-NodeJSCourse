@@ -83,5 +83,16 @@ exports.protect = catchAsync(async function(req, res, next) {
     );
 
   // User Verified Successfully
+  req.user = user;
   next();
 });
+
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role))
+      return next(
+        new AppError('You do not have the permission for this action.', 403)
+      );
+    next();
+  };
+};

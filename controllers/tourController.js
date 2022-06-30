@@ -80,7 +80,7 @@ exports.deleteTour = catchAsync(async (req, res, next) => {
     return next(new AppError('Could not find tour with the given id', 404));
   }
 
-  res.status(200).json({
+  res.status(204).json({
     status: 'success',
     data: null
   });
