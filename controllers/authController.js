@@ -66,7 +66,6 @@ exports.protect = catchAsync(async function(req, res, next) {
 
   // 2 Verify Token
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  console.log(decoded);
 
   // 3 Verify if user exits
   const user = await User.findById(decoded.id);
@@ -108,7 +107,6 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   //generate reset token and store it in db
   const resetToken = user.generateResetToken();
   await user.save({ validateBeforeSave: false });
-  console.log(resetToken);
 
   //send token to user email
   const resetUrl = `${req.protocol}://${req.get(
@@ -161,6 +159,28 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   //Login user
+  const token = signToken(user._id);
+
+  res.status(201).json({
+    status: 'success',
+    token
+  });
+});
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  //Get user from collection
+  const user = await User.findById(req.user._id).select('+password');
+
+  //Check if password is correct
+  if (!(await user.checkPassword(req.body.passwordCurrent, user.password)))
+    return next(new AppError('Incorrect current password', 401));
+
+  //update password
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  await user.save();
+
+  //Log the user in
   const token = signToken(user._id);
 
   res.status(201).json({
