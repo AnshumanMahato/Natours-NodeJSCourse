@@ -24,7 +24,7 @@ const createSendToken = (user, res) => {
 
   res.cookie('jwt', token, cookieOptions);
 
-  // Remove password from output
+  // Remove password and active from output
   user.password = undefined;
   user.active = undefined;
 
