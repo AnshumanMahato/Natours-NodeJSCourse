@@ -12,21 +12,37 @@ const signToken = id => {
   });
 };
 
-exports.signup = catchAsync(async (req, res, next) => {
-  const newUser = await User.create({
-    ...req.body
-  });
+const createSendToken = (user, res) => {
+  const token = signToken(user._id);
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true
+  };
+  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
-  const token = signToken(newUser._id);
+  res.cookie('jwt', token, cookieOptions);
+
+  // Remove password from output
+  user.password = undefined;
+  user.active = undefined;
 
   res.status(201).json({
     status: 'success',
     token,
     data: {
-      name: newUser.name,
-      email: newUser.email
+      user
     }
   });
+};
+
+exports.signup = catchAsync(async (req, res, next) => {
+  const newUser = await User.create({
+    ...req.body
+  });
+
+  createSendToken(newUser, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -44,12 +60,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // Sign Token
 
-  const token = signToken(user._id);
-
-  res.status(201).json({
-    status: 'success',
-    token
-  });
+  createSendToken(user, res);
 });
 
 exports.protect = catchAsync(async function(req, res, next) {
@@ -159,12 +170,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   //Login user
-  const token = signToken(user._id);
-
-  res.status(201).json({
-    status: 'success',
-    token
-  });
+  createSendToken(user, res);
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -181,10 +187,5 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   //Log the user in
-  const token = signToken(user._id);
-
-  res.status(201).json({
-    status: 'success',
-    token
-  });
+  createSendToken(user, res);
 });
