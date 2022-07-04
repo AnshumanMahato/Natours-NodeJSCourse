@@ -34,9 +34,9 @@ const reviewSchema = new mongoose.Schema(
 
 //Query Middleware: runs at find()
 reviewSchema.pre(/^find/, function(next) {
-  this.find({ secretTour: { $ne: true } }).populate({
-    path: 'tour user',
-    select: '-__v -passwordChangedAt'
+  this.populate({
+    path: 'user',
+    select: 'name photo'
   });
   next();
 });
