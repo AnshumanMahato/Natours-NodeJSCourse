@@ -11,18 +11,6 @@ const filter = (obj, ...allowedKeys) => {
   return newObj;
 };
 
-exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find();
-
-  res.status(200).json({
-    status: 'success',
-    results: users.length,
-    data: {
-      users
-    }
-  });
-});
-
 exports.updateMe = catchAsync(async (req, res, next) => {
   //Check that user does not send password
   if (req.body.password || req.body.passwordConfirm)
@@ -61,12 +49,19 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.addUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'this route has not been implemented'
+exports.addUser = factory.createOne(User);
+
+exports.getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.find();
+
+  res.status(200).json({
+    status: 'success',
+    results: users.length,
+    data: {
+      users
+    }
   });
-};
+});
 
 exports.getUser = (req, res) => {
   res.status(500).json({
@@ -75,10 +70,5 @@ exports.getUser = (req, res) => {
   });
 };
 
-exports.updateUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'this route has not been implemented'
-  });
-};
+exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);
