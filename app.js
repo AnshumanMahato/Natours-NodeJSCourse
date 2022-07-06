@@ -48,7 +48,8 @@ const styleSrcUrls = [
 const connectSrcUrls = [
   'https://*.mapbox.com/',
   'https://*.cloudflare.com',
-  'http://127.0.0.1:3000'
+  'http://127.0.0.1:3000',
+  'ws://127.0.0.1:60700/'
 ];
 
 const fontSrcUrls = ['fonts.googleapis.com', 'fonts.gstatic.com'];
