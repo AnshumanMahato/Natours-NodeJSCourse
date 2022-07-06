@@ -106,6 +106,7 @@ exports.protect = catchAsync(async function(req, res, next) {
 
   // User Verified Successfully
   req.user = user;
+  res.locals.user = user;
   next();
 });
 
