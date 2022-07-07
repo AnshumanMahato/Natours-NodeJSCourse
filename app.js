@@ -14,6 +14,7 @@ const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const viewRouter = require('./routes/viewRoutes');
+const bookingRouter = require('./routes/bookingRoutes');
 const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
@@ -37,7 +38,8 @@ app.use(
 const scriptSrcUrls = [
   'https://api.tiles.mapbox.com/',
   'https://api.mapbox.com/',
-  'https://*.cloudflare.com'
+  'https://*.cloudflare.com',
+  'https://js.stripe.com/v3/'
 ];
 const styleSrcUrls = [
   'https://api.mapbox.com/',
@@ -53,6 +55,8 @@ const connectSrcUrls = [
   'ws://127.0.0.1:56233/'
 ];
 
+const frameSrcUrls = ['https://js.stripe.com/'];
+
 const fontSrcUrls = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 
 app.use(
@@ -65,7 +69,8 @@ app.use(
       workerSrc: ["'self'", 'blob:'],
       objectSrc: [],
       imgSrc: ["'self'", 'blob:', 'data:'],
-      fontSrc: ["'self'", ...fontSrcUrls]
+      fontSrc: ["'self'", ...fontSrcUrls],
+      frameSrc: ["'self'", ...frameSrcUrls]
     }
   })
 );
@@ -132,6 +137,7 @@ app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
+app.use('/api/v1/bookings', bookingRouter);
 
 app.all('*', (req, res, next) => {
   // res.status(404).json({
