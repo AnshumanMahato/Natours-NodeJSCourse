@@ -10,9 +10,6 @@ export const login = async (email, password) => {
       data: {
         email,
         password
-      },
-      headers: {
-        'Access-Control-Allow-Origin': 'crossorigin'
       }
     });
 
