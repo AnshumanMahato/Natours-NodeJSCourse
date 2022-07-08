@@ -52,7 +52,8 @@ const connectSrcUrls = [
   'https://*.cloudflare.com',
   'http://127.0.0.1:3000',
   'ws://127.0.0.1:60700/',
-  'ws://127.0.0.1:56233/'
+  'ws://127.0.0.1:56233/',
+  'ws://127.0.0.1:50696/'
 ];
 
 const frameSrcUrls = ['https://js.stripe.com/'];
