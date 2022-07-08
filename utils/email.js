@@ -24,11 +24,11 @@ module.exports = class Email {
     }
 
     return nodemailer.createTransport({
-      host: process.env.SIB_EMAIL_HOST,
-      port: process.env.SIB_EMAIL_PORT,
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
       auth: {
-        user: process.env.SIB_EMAIL_USERNAME,
-        pass: process.env.SIB_EMAIL_PASSWORD
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD
       }
     });
   }

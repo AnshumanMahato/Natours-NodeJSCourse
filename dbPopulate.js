@@ -3,12 +3,15 @@ const mongoose = require('mongoose');
 const Tour = require('./models/tourModel');
 const User = require('./models/userModel');
 const Review = require('./models/reviewModel');
-require('dotenv').config({
-  path: './config.env'
-});
+require('dotenv').config();
+
+const DB = process.env.DATABASE.replace(
+  '<PASSWORD>',
+  process.env.DATABASE_PASSWORD
+);
 
 mongoose
-  .connect(process.env.DB, {
+  .connect(DB, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
