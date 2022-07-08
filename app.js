@@ -7,7 +7,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
-const cors = require('cors');
+// const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 
@@ -27,60 +27,60 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // GLOBAL MIDDLEWARES
-app.use(cors());
-app.options('*', cors());
+// app.use(cors());
+// app.options('*', cors());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set security HTTP headers
-app.use(helmet());
-// app.use(
-//   helmet({
-//     crossOriginEmbedderPolicy: false
-//   })
-// );
+// app.use(helmet());
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false
+  })
+);
 
 // Further HELMET configuration for Security Policy (CSP)
-// const scriptSrcUrls = [
-//   'https://api.tiles.mapbox.com/',
-//   'https://api.mapbox.com/',
-//   'https://*.cloudflare.com',
-//   'https://js.stripe.com/v3/'
-// ];
-// const styleSrcUrls = [
-//   'https://api.mapbox.com/',
-//   'https://api.tiles.mapbox.com/',
-//   'https://fonts.googleapis.com/',
-//   'https://www.myfonts.com/fonts/radomir-tinkov/gilroy/*'
-// ];
-// const connectSrcUrls = [
-//   'https://*.mapbox.com/',
-//   'https://*.cloudflare.com',
-//   'http://127.0.0.1:3000',
-//   'ws://127.0.0.1:60700/',
-//   'ws://127.0.0.1:56233/',
-//   'ws://127.0.0.1:50696/'
-// ];
+const scriptSrcUrls = [
+  'https://api.tiles.mapbox.com/',
+  'https://api.mapbox.com/',
+  'https://*.cloudflare.com',
+  'https://js.stripe.com/v3/'
+];
+const styleSrcUrls = [
+  'https://api.mapbox.com/',
+  'https://api.tiles.mapbox.com/',
+  'https://fonts.googleapis.com/',
+  'https://www.myfonts.com/fonts/radomir-tinkov/gilroy/*'
+];
+const connectSrcUrls = [
+  'https://*.mapbox.com/',
+  'https://*.cloudflare.com',
+  'http://127.0.0.1:3000',
+  'ws://127.0.0.1:60700/',
+  'ws://127.0.0.1:56233/',
+  'ws://127.0.0.1:50696/'
+];
 
-// const frameSrcUrls = ['https://js.stripe.com/'];
+const frameSrcUrls = ['https://js.stripe.com/'];
 
-// const fontSrcUrls = ['fonts.googleapis.com', 'fonts.gstatic.com'];
+const fontSrcUrls = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 
-// app.use(
-//   helmet.contentSecurityPolicy({
-//     directives: {
-//       defaultSrc: [],
-//       connectSrc: ["'self'", ...connectSrcUrls],
-//       scriptSrc: ["'self'", ...scriptSrcUrls],
-//       styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
-//       workerSrc: ["'self'", 'blob:'],
-//       objectSrc: [],
-//       imgSrc: ["'self'", 'blob:', 'data:'],
-//       fontSrc: ["'self'", ...fontSrcUrls],
-//       frameSrc: ["'self'", ...frameSrcUrls]
-//     }
-//   })
-// );
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: [],
+      connectSrc: ["'self'", ...connectSrcUrls],
+      scriptSrc: ["'self'", ...scriptSrcUrls],
+      styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+      workerSrc: ["'self'", 'blob:'],
+      objectSrc: [],
+      imgSrc: ["'self'", 'blob:', 'data:'],
+      fontSrc: ["'self'", ...fontSrcUrls],
+      frameSrc: ["'self'", ...frameSrcUrls]
+    }
+  })
+);
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
