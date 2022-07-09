@@ -1,6 +1,7 @@
 const Tour = require('../models/tourModel');
 const User = require('../models/userModel');
 const Booking = require('../models/bookingModel');
+const Review = require('../models/reviewModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
@@ -34,19 +35,17 @@ exports.getTour = catchAsync(async (req, res, next) => {
   if (!tour) {
     return next(new AppError('There is no tour with that name.', 404));
   }
+  if (req.user) {
+    const book = await Booking.findOne({ tour: tour._id, user: req.user._id });
+    if (book) tour.isBooked = true;
+  }
 
   // 2) Build template
   // 3) Render template using data from 1)
-  res
-    .status(200)
-    // .set(
-    //   'Content-Security-Policy',
-    //   "default-src 'self' https://*.mapbox.com ;base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src https://cdnjs.cloudflare.com https://api.mapbox.com 'self' blob: ;script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests;"
-    // )
-    .render('tour', {
-      title: `${tour.name} Tour`,
-      tour
-    });
+  res.status(200).render('tour', {
+    title: `${tour.name} Tour`,
+    tour
+  });
 });
 
 exports.getSingupForm = (req, res) => {
@@ -103,5 +102,17 @@ exports.updateUserData = catchAsync(async (req, res, next) => {
   res.status(200).render('account', {
     title: 'Your account',
     user: updatedUser
+  });
+});
+
+exports.getMyReviews = catchAsync(async (req, res) => {
+  const reviews = await Review.find({ user: req.user._id }).populate({
+    path: 'tour',
+    select: 'name imageCover'
+  });
+  console.log(reviews);
+  res.status(200).render('myReviews', {
+    title: 'My Reviews',
+    reviews
   });
 });

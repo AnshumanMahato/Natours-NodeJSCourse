@@ -95,10 +95,28 @@ block content
       img.cta__img.cta__img--1(src=`/img/tours/${tour.images[1]}`, alt='Tour picture')
       img.cta__img.cta__img--2(src=`/img/tours/${tour.images[2]}`, alt='Tour picture')
       .cta__content
-        h2.heading-secondary What are you waiting for?
-        p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
+        if tour.isBooked
+          h2.heading-secondary We would like to have your feedback
+          p.cta__text= `We hope you enjoyed your trip. You may share your memories here!`
+        else
+          h2.heading-secondary What are you waiting for?
+          p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
         
         if user
-          button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Book tour now!
+          if tour.isBooked
+            button.btn.btn--green.span-all-rows#review-tour Add Review
+          else
+            button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Book tour now!
         else
           a.btn.btn--green.span-all-rows(href='/login') Log in to book tour
+    .review-form(class='hide')
+      h2.heading-secondary.ma-bt-lg Add your Review
+      form.form.form--review(data-tour-id=`${tour.id}`)
+        .form__group
+          label.form__label(for='rating') Rating
+          input#rating.form__input(type='number', placeholder='Something between 1 - 5', required, min="1", max="5")
+        .form__group.ma-bt-md
+          label.form__label(for='review') Review
+          input#review.form__input(type='text', placeholder='How did you feel on the trip?', required, minlength='8')
+        .form__group
+          button.btn.btn--green Save Review

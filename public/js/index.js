@@ -5,16 +5,19 @@ import { login, logout } from './login';
 import { displayMap } from './mapbox';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
+import { saveReview } from './review';
 import { showAlert } from './alerts';
 
 // DOM ELEMENTS
 const mapBox = document.getElementById('map');
 const signupForm = document.querySelector('.form--signup');
 const loginForm = document.querySelector('.form--login');
+const reviewForm = document.querySelector('.form--review');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 const bookBtn = document.getElementById('book-tour');
+const addReviewBtn = document.getElementById('review-tour');
 
 // DELEGATION
 if (mapBox) {
@@ -76,11 +79,26 @@ if (userPasswordForm)
     document.getElementById('password-confirm').value = '';
   });
 
+if (reviewForm)
+  reviewForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const rating = document.getElementById('rating').value;
+    const review = document.getElementById('review').value;
+    const { tourId } = e.target.dataset;
+    await saveReview(tourId, rating, review);
+  });
+
 if (bookBtn)
   bookBtn.addEventListener('click', e => {
     e.target.textContent = 'Processing...';
     const { tourId } = e.target.dataset;
     bookTour(tourId);
+  });
+
+if (addReviewBtn)
+  addReviewBtn.addEventListener('click', e => {
+    e.preventDefault();
+    reviewForm.closest('.review-form').classList.remove('hide');
   });
 
 const alertMessage = document.querySelector('body').dataset.alert;

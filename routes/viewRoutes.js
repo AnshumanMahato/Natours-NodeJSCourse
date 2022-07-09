@@ -13,11 +13,14 @@ router.get('/login', authController.isLoggedIn, viewsController.getLoginForm);
 router.get('/me', authController.protect, viewsController.getAccount);
 
 router.get('/my-tours', authController.protect, viewsController.getMyTours);
+router.get('/my-reviews', authController.protect, viewsController.getMyReviews);
 
 router.post(
   '/submit-user-data',
   authController.protect,
   viewsController.updateUserData
 );
+
+// router.get('/manage', viewsController.manage);
 
 module.exports = router;

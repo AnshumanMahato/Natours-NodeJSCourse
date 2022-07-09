@@ -52,7 +52,9 @@ const styleSrcUrls = [
   'https://api.mapbox.com/',
   'https://api.tiles.mapbox.com/',
   'https://fonts.googleapis.com/',
-  'https://www.myfonts.com/fonts/radomir-tinkov/gilroy/*'
+  'https://www.myfonts.com/fonts/radomir-tinkov/gilroy/*',
+  'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/',
+  'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/'
 ];
 const connectSrcUrls = [
   'https://*.mapbox.com/',
@@ -65,7 +67,12 @@ const connectSrcUrls = [
 
 const frameSrcUrls = ['https://js.stripe.com/'];
 
-const fontSrcUrls = ['fonts.googleapis.com', 'fonts.gstatic.com'];
+const fontSrcUrls = [
+  'fonts.googleapis.com',
+  'fonts.gstatic.com',
+  'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/',
+  'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/'
+];
 
 app.use(
   helmet.contentSecurityPolicy({
