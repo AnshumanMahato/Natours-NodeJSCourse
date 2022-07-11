@@ -6,18 +6,22 @@ import { displayMap } from './mapbox';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
 import { saveReview } from './review';
-import { showAlert } from './alerts';
+import { hideAlert, showAlert, showPrompt } from './alerts';
+import { deleteResource, editResource } from './manage';
 
 // DOM ELEMENTS
 const mapBox = document.getElementById('map');
 const signupForm = document.querySelector('.form--signup');
 const loginForm = document.querySelector('.form--login');
 const reviewForm = document.querySelector('.form--review');
+const editForm = document.querySelector('.form--edit');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 const bookBtn = document.getElementById('book-tour');
 const addReviewBtn = document.getElementById('review-tour');
+
+const deleteBtns = document.querySelectorAll('.delete');
 
 // DELEGATION
 if (mapBox) {
@@ -88,6 +92,20 @@ if (reviewForm)
     await saveReview(tourId, rating, review);
   });
 
+if (editForm)
+  editForm.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const data = {};
+    data.name = document.getElementById('name').value;
+    data.email = document.getElementById('email').value;
+    data.role = document.getElementById('role').value;
+    data.active = document.getElementById('status').value === 'active';
+    const { id } = e.target.dataset;
+    console.log(data, id);
+    await editResource(id, data);
+  });
+
 if (bookBtn)
   bookBtn.addEventListener('click', e => {
     e.target.textContent = 'Processing...';
@@ -103,3 +121,20 @@ if (addReviewBtn)
 
 const alertMessage = document.querySelector('body').dataset.alert;
 if (alertMessage) showAlert('success', alertMessage, 20);
+
+if (deleteBtns)
+  deleteBtns.forEach(btn =>
+    btn.addEventListener('click', async e => {
+      e.preventDefault();
+      const id = btn.dataset.id;
+      showPrompt('warn', 'Would you like the delete the userid?');
+      document
+        .querySelector('.btn--confirm')
+        .addEventListener('click', async () => {
+          await deleteResource(id);
+        });
+      document
+        .querySelector('.btn--cancel')
+        .addEventListener('click', hideAlert);
+    })
+  );

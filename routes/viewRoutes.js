@@ -21,6 +21,7 @@ router.post(
   viewsController.updateUserData
 );
 
-// router.get('/manage', viewsController.manage);
+router.get('/manage', viewsController.manage);
+router.get('/edit/:id', viewsController.edit);
 
 module.exports = router;

@@ -1,5 +1,6 @@
 const Tour = require('../models/tourModel');
 const User = require('../models/userModel');
+// const userController = require('./userController');
 const Booking = require('../models/bookingModel');
 const Review = require('../models/reviewModel');
 const catchAsync = require('../utils/catchAsync');
@@ -114,5 +115,33 @@ exports.getMyReviews = catchAsync(async (req, res) => {
   res.status(200).render('myReviews', {
     title: 'My Reviews',
     reviews
+  });
+});
+
+exports.manage = catchAsync(async (req, res, next) => {
+  const users = await User.find().select('+active');
+  const total = await User.countDocuments();
+  res.status(200).render('manage', {
+    title: 'Manage',
+    resource: 'user',
+    users,
+    total
+  });
+});
+
+exports.edit = catchAsync(async (req, res, next) => {
+  const userdata = await User.findOne({ _id: req.params.id }).select('+active');
+
+  if (!userdata)
+    next(
+      new AppError(
+        'User not found. It might have been deleted. Please refresh to get the current list of users.',
+        404
+      )
+    );
+
+  res.status(200).render('edit-user', {
+    title: 'Edit User',
+    userdata
   });
 });

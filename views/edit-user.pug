@@ -1,0 +1,32 @@
+extends base
+
+block content
+    .main
+        .edit-form
+            h2.heading-secondary.ma-bt-lg edit user info!
+            form.form.form--edit(data-id= `${userdata._id}` )
+                .form__group
+                    label.form__label(for='name') User Name
+                    input#name.form__input(type='text' placeholder='Insert new name' value=`${userdata.name}`)
+                .form__group
+                    label.form__label(for='email') Email Address
+                    input#email.form__input(type='email' placeholder='Insert new email address' value=`${userdata.email}`)
+                .form__group.ma-bt-md
+                      label.form__label(for='role') Role
+                       select#role.form__input(required='')
+                        for role in ['guide','lead-guide','admin','user']
+                            if userdata.role === role 
+                                option(value=role selected)= role.toUpperCase()
+                            else
+                                option(value=role)= role.toUpperCase()
+                .form__group.ma-bt-md
+                       label.form__label(for='status') Status
+                        select#status.form__input(required='')
+                            if userdata.active
+                                option(value='active' selected) ACTIVE
+                                option(value='inactive') INACTIVE
+                            else
+                                option(value='active') ACTIVE
+                                option(value='inactive' selected) INACTIVE
+                .form__group
+                        input.btn.btn--green(type='submit' value='Save Details') 

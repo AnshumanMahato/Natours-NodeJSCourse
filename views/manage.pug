@@ -1,1 +1,47 @@
 extends base
+
+mixin row(user,index)
+    tr
+        td #{index}
+        td #{user.name}
+        td #{user.email}
+        td #{user.role.toUpperCase()}
+        td #{user.active?'ACTIVE':'INACTIVE'}
+        td
+            if user.role !== 'admin'
+                a(href=`/edit/${user._id}` class="edit" title="Edit"  data-toggle="tooltip")
+                    i(class="material-icons") &#xE254;
+                a(href='#' class="delete" title="Delete" data-id=`${user._id}` data-toggle="tooltip")
+                    i(class="material-icons") &#xE872;
+
+block prepend head 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+block content 
+    .container
+        h2.heading-secondary= `Manage ${resource}`
+
+        <div class="container-xl">
+            <div class="table-responsive">
+                <div class="table-wrapper">
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            for user,i in users
+                                +row(user,i+1)
+                        </tbody>
+                    </table>
+                </div>
+            </div>  
+        </div>   

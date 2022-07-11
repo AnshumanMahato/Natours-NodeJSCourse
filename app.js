@@ -46,7 +46,9 @@ const scriptSrcUrls = [
   'https://api.tiles.mapbox.com/',
   'https://api.mapbox.com/',
   'https://*.cloudflare.com',
-  'https://js.stripe.com/v3/'
+  'https://js.stripe.com/v3/',
+  'https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/',
+  'https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/'
 ];
 const styleSrcUrls = [
   'https://api.mapbox.com/',
@@ -54,7 +56,8 @@ const styleSrcUrls = [
   'https://fonts.googleapis.com/',
   'https://www.myfonts.com/fonts/radomir-tinkov/gilroy/*',
   'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/',
-  'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/'
+  'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/',
+  'https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/'
 ];
 const connectSrcUrls = [
   'https://*.mapbox.com/',
@@ -62,7 +65,8 @@ const connectSrcUrls = [
   'http://127.0.0.1:3000',
   'ws://127.0.0.1:60700/',
   'ws://127.0.0.1:56233/',
-  'ws://127.0.0.1:50696/'
+  'ws://127.0.0.1:50696/',
+  'ws://127.0.0.1:53937/'
 ];
 
 const frameSrcUrls = ['https://js.stripe.com/'];
