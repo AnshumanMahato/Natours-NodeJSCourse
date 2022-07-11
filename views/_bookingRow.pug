@@ -1,0 +1,12 @@
+mixin bookingRow(booking,index)
+    tr
+        td #{index}
+        td #{booking._id}
+        td #{booking.user? booking.user.name : 'Deleted User'}
+        td #{booking.tour.name}
+        td= `${booking.createdAt.toLocaleString('en-us', {day:'numeric' ,month: 'long', year: 'numeric'})}`
+        td= `$${booking.price}`
+        td #{booking.paid? 'Paid' : 'Pending'}
+        td
+            a(href=`/edit-booking/${booking._id}` class="edit" title="Edit"  data-toggle="tooltip")
+                i(class="material-icons") &#xE254;

@@ -1,0 +1,13 @@
+mixin userRow(user,index)
+    tr
+        td #{index}
+        td #{user.name}
+        td #{user.email}
+        td #{user.role.toUpperCase()}
+        td #{user.active?'ACTIVE':'INACTIVE'}
+        td
+            if user.role !== 'admin'
+                a(href=`/edit/${user._id}` class="edit" title="Edit"  data-toggle="tooltip")
+                    i(class="material-icons") &#xE254;
+                a(href='#' class="delete" title="Delete" data-id=`${user._id}` data-toggle="tooltip")
+                    i(class="material-icons") &#xE872;

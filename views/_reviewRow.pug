@@ -1,0 +1,11 @@
+mixin reviewRow(review,index)
+    tr
+        td #{index}
+        td #{review.user? review.user.name : 'Deleted User'}
+        td #{review.tour.name}
+        td= `${review.createdAt.toLocaleString('en-us', {day:'numeric' ,month: 'long', year: 'numeric'})}`
+        td #{review.rating}
+        td #{review.review}
+        td
+            a(href='#' class="delete" title="Delete" data-id=`${review._id}` data-toggle="tooltip")
+                i(class="material-icons") &#xE872;

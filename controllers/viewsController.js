@@ -118,16 +118,31 @@ exports.getMyReviews = catchAsync(async (req, res) => {
   });
 });
 
-exports.manage = catchAsync(async (req, res, next) => {
-  const users = await User.find().select('+active');
-  const total = await User.countDocuments();
-  res.status(200).render('manage', {
-    title: 'Manage',
-    resource: 'user',
-    users,
-    total
+exports.manage = resourceType =>
+  catchAsync(async (req, res, next) => {
+    let data;
+    if (resourceType === 'user') {
+      data = await User.find().select('+active');
+    }
+    if (resourceType === 'review') {
+      data = await Review.find().populate({
+        path: 'tour',
+        select: `name`
+      });
+    }
+    if (resourceType === 'booking') {
+      data = await Booking.find().populate({
+        path: 'user',
+        select: 'name'
+      });
+    }
+    console.log(data);
+    res.status(200).render('manage', {
+      title: `Manage ${resourceType[0].toUpperCase()}${resourceType.slice(1)}`,
+      resourceType,
+      data
+    });
   });
-});
 
 exports.edit = catchAsync(async (req, res, next) => {
   const userdata = await User.findOne({ _id: req.params.id }).select('+active');
@@ -140,7 +155,7 @@ exports.edit = catchAsync(async (req, res, next) => {
       )
     );
 
-  res.status(200).render('edit-user', {
+  res.status(200).render('editUser', {
     title: 'Edit User',
     userdata
   });
