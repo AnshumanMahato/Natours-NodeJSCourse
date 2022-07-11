@@ -61,7 +61,9 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Please send your email and password.', 400));
 
   // Verify Credentials
-  const user = await User.findOne({ email }).select('+password');
+  let user = await User.findOne({ email }).select('+password +active');
+  if (!user.active) user = undefined;
+
   if (!user || !(await user.checkPassword(password, user.password)))
     return next(new AppError('Incorrect user or password.', 401));
 
@@ -96,7 +98,9 @@ exports.protect = catchAsync(async function(req, res, next) {
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   // 3 Verify if user exits
-  const user = await User.findById(decoded.id);
+  let user = await User.findById(decoded.id).select('+active');
+  if (!user.active) user = undefined;
+
   if (!user)
     return next(
       new AppError(
@@ -128,7 +132,9 @@ exports.isLoggedIn = async (req, res, next) => {
       );
 
       // 2) Check if user still exists
-      const currentUser = await User.findById(decoded.id);
+      let currentUser = await User.findById(decoded.id).select('+active');
+      if (!currentUser.active) currentUser = undefined;
+
       if (!currentUser) {
         return next();
       }
@@ -160,7 +166,9 @@ exports.restrictTo = (...roles) => {
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   //find user id
-  const user = await User.findOne({ email: req.body.email });
+  let user = await User.findOne({ email: req.body.email }).select('+active');
+  if (!user.active) user = undefined;
+
   if (!user)
     return next(new AppError('No user found for the given email', 404));
 
@@ -194,10 +202,11 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     .update(req.params.token)
     .digest('hex');
 
-  const user = await User.findOne({
+  let user = await User.findOne({
     passwordResetToken: hashedToken,
     passwordResetExpiry: { $gt: Date.now() }
-  });
+  }).select('+active');
+  if (!user.active) user = undefined;
 
   //Check if token has expired or user doen not exist
   if (!user)
