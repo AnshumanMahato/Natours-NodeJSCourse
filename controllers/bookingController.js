@@ -3,6 +3,7 @@ const Tour = require('../models/tourModel');
 const User = require('../models/userModel');
 const Booking = require('../models/bookingModel');
 const catchAsync = require('../utils/catchAsync');
+const Email = require('../utils/email');
 const factory = require('./handlerFactory');
 
 exports.getCheckoutSession = catchAsync(async (req, res, next) => {
@@ -41,12 +42,18 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   });
 });
 
-const createBookingCheckout = async session => {
+const createBookingCheckout = async (req, session) => {
   console.log(session);
-  const tour = session.client_reference_id;
-  const user = (await User.findOne({ email: session.customer_email })).id;
+  const tour = await Tour.findById(session.client_reference_id).select('name');
+  const user = await User.findOne({ email: session.customer_email }).select(
+    'name email'
+  );
   const price = session.amount_subtotal / 100;
-  await Booking.create({ tour, user, price });
+  const booking = await Booking.create({ tour: tour.id, user: user.id, price });
+  booking.tour = tour;
+  booking.user = user;
+  const url = `${req.protocol}://${req.get('host')}/`;
+  await new Email(user, url).sendReciept(booking);
 };
 
 exports.webhookCheckout = async (req, res, next) => {
@@ -65,7 +72,7 @@ exports.webhookCheckout = async (req, res, next) => {
 
   if (event.type === 'checkout.session.completed') {
     console.log('event got');
-    await createBookingCheckout(event.data.object);
+    await createBookingCheckout(req, event.data.object);
   }
 
   res.status(200).json({ received: true });

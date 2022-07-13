@@ -65,4 +65,26 @@ module.exports = class Email {
       'Your password reset token (valid for only 10 minutes)'
     );
   }
+
+  async sendReciept(booking) {
+    const subject =
+      'Thank you for booking you tour with us. We hope you enjoy your trip';
+    const html = pug.renderFile(`${__dirname}/../views/email/reciept.pug`, {
+      firstName: this.firstName,
+      url: this.url,
+      subject,
+      booking
+    });
+    // 2) Define email options
+    const mailOptions = {
+      from: this.from,
+      to: this.to,
+      subject,
+      html,
+      text: htmlToText.fromString(html)
+    };
+
+    // 3) Create a transport and send email
+    await this.newTransport().sendMail(mailOptions);
+  }
 };
