@@ -43,9 +43,11 @@ block content
               img.form__user-photo(src=`/img/users/${user.photo}`, alt='User photo')
               input.form__upload(type='file', accept='image/*', id='photo', name='photo')
               label(for='photo') Choose new photo
+              = `\u00A0\u00A0\u00A0\u00A0\u00A0`
+              span.filename 
               
             .form__group.right
-              button.btn.btn--small.btn--green Save settings
+              button.btn.btn--small.btn--green.btn--save-data Save settings
               
         .line &nbsp;
         

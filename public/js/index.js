@@ -53,9 +53,14 @@ if (loginForm) {
 
 if (logOutBtn) logOutBtn.addEventListener('click', logout);
 
-if (userDataForm)
+if (userDataForm) {
+  document.getElementById('photo').addEventListener('change', function() {
+    console.log(this);
+    document.querySelector('.filename').textContent = this.files[0].name;
+  });
   userDataForm.addEventListener('submit', e => {
     e.preventDefault();
+    document.querySelector('.btn--save-data').textContent = 'Updating...';
     const form = new FormData();
     form.append('name', document.getElementById('name').value);
     form.append('email', document.getElementById('email').value);
@@ -63,6 +68,7 @@ if (userDataForm)
 
     updateSettings(form, 'data');
   });
+}
 
 if (userPasswordForm)
   userPasswordForm.addEventListener('submit', async e => {
