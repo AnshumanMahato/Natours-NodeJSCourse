@@ -10,14 +10,13 @@ block prepend head
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 block content 
-    - console.log(data)
     .container
-        h2.heading-secondary= `Manage ${resourceType}`
+        h2.heading-secondary= `Manage ${resourceType}s`
 
         <div class="container-xl">
             <div class="table-responsive">
                 <div class="table-wrapper">
-                    <table class="table table-striped table-hover table-bordered">
+                    table(class="table table-striped table-hover table-bordered" data-resource= resourceType)
                         <thead>
                             <tr>
                                 if resourceType === 'user'

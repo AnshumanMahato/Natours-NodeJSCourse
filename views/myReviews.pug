@@ -19,7 +19,8 @@ mixin reviewCard(review)
             use(xlink:href='/img/icons.svg#icon-star')
 
 block content 
-  main.main
+  main.main.overview
+    h2.heading-secondary.overview-heading= `My Reviews`
     .card-container
       - console.log(reviews)
       each review in reviews

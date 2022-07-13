@@ -122,19 +122,21 @@ if (addReviewBtn)
 const alertMessage = document.querySelector('body').dataset.alert;
 if (alertMessage) showAlert('success', alertMessage, 20);
 
-if (deleteBtns)
+if (deleteBtns) {
+  const { resource } = document.querySelector('table').dataset;
   deleteBtns.forEach(btn =>
     btn.addEventListener('click', async e => {
       e.preventDefault();
       const id = btn.dataset.id;
-      showPrompt('warn', 'Would you like the delete the userid?');
+      showPrompt('warn', `Would you like the delete the ${resource}?`);
       document
         .querySelector('.btn--confirm')
         .addEventListener('click', async () => {
-          await deleteResource(id);
+          await deleteResource(resource, id);
         });
       document
         .querySelector('.btn--cancel')
         .addEventListener('click', hideAlert);
     })
   );
+}

@@ -1,7 +1,8 @@
 extends base
 
 block content
-  main.main
+  main.main.overview
+    h2.heading-secondary.overview-heading= `${title}`
     .card-container
     
       each tour in tours

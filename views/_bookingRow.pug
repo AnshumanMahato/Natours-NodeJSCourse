@@ -8,5 +8,5 @@ mixin bookingRow(booking,index)
         td= `$${booking.price}`
         td #{booking.paid? 'Paid' : 'Pending'}
         td
-            a(href=`/edit-booking/${booking._id}` class="edit" title="Edit"  data-toggle="tooltip")
-                i(class="material-icons") &#xE254;
+            a(href='#' class="delete" title="Delete" data-id=`${booking._id}` data-toggle="tooltip")
+                i(class="material-icons") &#xE872;

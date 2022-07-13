@@ -136,9 +136,8 @@ exports.manage = resourceType =>
         select: 'name'
       });
     }
-    console.log(data);
     res.status(200).render('manage', {
-      title: `Manage ${resourceType[0].toUpperCase()}${resourceType.slice(1)}`,
+      title: `Manage ${resourceType[0].toUpperCase()}${resourceType.slice(1)}s`,
       resourceType,
       data
     });
