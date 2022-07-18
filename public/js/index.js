@@ -20,6 +20,7 @@ const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 const bookBtn = document.getElementById('book-tour');
 const addReviewBtn = document.getElementById('review-tour');
+const nav = document.querySelector('.navigation__nav');
 
 const deleteBtns = document.querySelectorAll('.delete');
 
@@ -128,7 +129,7 @@ if (addReviewBtn)
 const alertMessage = document.querySelector('body').dataset.alert;
 if (alertMessage) showAlert('success', alertMessage, 20);
 
-if (deleteBtns) {
+if (deleteBtns.length) {
   const { resource } = document.querySelector('table').dataset;
   deleteBtns.forEach(btn =>
     btn.addEventListener('click', async e => {
@@ -146,3 +147,8 @@ if (deleteBtns) {
     })
   );
 }
+
+if (nav)
+  nav.addEventListener('click', () => {
+    document.getElementById('nav-toggle').checked = false;
+  });

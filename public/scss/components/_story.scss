@@ -1,0 +1,79 @@
+.story {
+    width: 75%;
+    margin: 0 auto;
+    background-color: rgba($color-white,0.6);
+    padding: 6rem;
+    border-radius: 3px;
+    box-shadow: 0 3rem 6rem rgba($color-black, 0.1);
+    font-size: $default-font-size;
+    transform: skewX(-12deg);
+
+    @include respond(tab-port) {
+        width: 100%;
+        padding: 4rem;
+    }
+
+    @include respond(phone) {
+        transform: skewX(0);
+    }
+
+    & > * {
+        transform: skewX(12deg);
+
+        @include respond(phone) {
+            transform: skewX(0);
+            text-align: center;
+        }
+    }
+
+    &__figure {
+        overflow: hidden;
+        width: 15rem;
+        height: 15rem;
+        position: relative;
+        float: left;
+        -webkit-shape-outside: circle(50% at 50% 50%);
+        shape-outside: circle(50% at 50% 50%);
+        clip-path: circle(50% at 50% 50%);
+        margin-right: 3rem; // add space between the text and the figure
+        // Alternate solution 
+        //     transform: translateX(-3rem);
+        //     padding-left: 9rem; (in int story component) 
+
+        @include respond(phone) {
+            float: none;
+            margin: 0 auto 2rem;
+        }
+    }
+
+    &__img {
+        height: 100%;
+        transition: all 0.5s;
+        transform: translateX(-4rem) scale(1.4);
+        backface-visibility: hidden;
+    }
+
+    &__caption {
+        font-size: 1.7rem;
+        text-transform: uppercase;
+        color: $color-white;
+        position: absolute;
+        text-align: center;
+        top: 50%;
+        left: 50%;
+        backface-visibility: hidden;
+        transition: all 0.5s;
+        opacity: 0;
+        transform: translate(-50%,20%);
+    }
+
+    &:hover &__caption {
+        transform: translate(-50%,-50%);
+        opacity: 1;
+    }
+
+    &:hover &__img {
+        transform: translateX(-4rem) scale(1);
+        filter: blur(3px) brightness(80%);
+    }
+}

@@ -19,7 +19,7 @@ const viewRouter = require('./routes/viewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 const bookingController = require('./controllers/bookingController');
 const globalErrorHandler = require('./controllers/errorController');
-const Booking = require('./models/bookingModel');
+// const Booking = require('./models/bookingModel');
 
 const app = express();
 
@@ -82,7 +82,7 @@ const fontSrcUrls = [
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: [],
+      defaultSrc: ["'self'"],
       connectSrc: ["'self'", ...connectSrcUrls],
       scriptSrc: ["'self'", ...scriptSrcUrls],
       styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
@@ -162,21 +162,12 @@ app.use(compression());
 
 //Route handling with route method
 //Routes
-// app.get('/email', async (req, res) => {
-//   const booking = await Booking.findOne().populate({
-//     path: 'user',
-//     select: 'name email'
-//   });
-
-//   const url = `${req.protocol}://${req.get('host')}/`;
-
-//   console.log(booking);
-//   res.render('email/reciept', {
-//     subject: 'reciept',
-//     booking,
-//     url
-//   });
-// });
+app.get('/home', async (req, res) => {
+  const url = `${req.protocol}://${req.get('host')}/`;
+  res.render('index', {
+    url
+  });
+});
 
 app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);

@@ -3,7 +3,6 @@ mixin userRow(user,index)
         td #{index}
         td #{user.name}
         td #{user.email}
-        td #{user.role.toUpperCase()}
         td #{user.active?'ACTIVE':'INACTIVE'}
         td
             if user.role !== 'admin'
