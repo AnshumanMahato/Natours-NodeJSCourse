@@ -7,6 +7,3 @@ mixin bookingRow(booking,index)
         td= `${booking.createdAt.toLocaleString('en-us', {day:'numeric' ,month: 'long', year: 'numeric'})}`
         td= `$${booking.price}`
         td #{booking.paid? 'Paid' : 'Pending'}
-        td
-            a(href='#' class="delete" title="Delete" data-id=`${booking._id}` data-toggle="tooltip")
-                i(class="material-icons") &#xE872;

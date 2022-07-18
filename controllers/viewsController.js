@@ -137,7 +137,7 @@ exports.manage = resourceType =>
       });
     }
     res.status(200).render('manage', {
-      title: `Manage ${resourceType[0].toUpperCase()}${resourceType.slice(1)}s`,
+      title: `View ${resourceType[0].toUpperCase()}${resourceType.slice(1)}s`,
       resourceType,
       data
     });
