@@ -7,7 +7,6 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
-// const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 
@@ -19,7 +18,6 @@ const viewRouter = require('./routes/viewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 const bookingController = require('./controllers/bookingController');
 const globalErrorHandler = require('./controllers/errorController');
-// const Booking = require('./models/bookingModel');
 
 const app = express();
 
@@ -28,14 +26,9 @@ app.enable('trust proxy');
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
-// GLOBAL MIDDLEWARES
-// app.use(cors());
-// app.options('*', cors());
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set security HTTP headers
-// app.use(helmet());
 app.use(
   helmet({
     crossOriginEmbedderPolicy: false
@@ -143,32 +136,6 @@ app.use(
 
 app.use(compression());
 
-//Test Middleware
-// app.use((req, res, next) => {
-//   console.log(req.cookies);
-//   next();
-// });
-
-//Route Handlers
-
-//Route handling with individual route methods
-
-// app.get('/api/v1/tours', getAllTours);
-// app.post('/api/v1/tours', addTour);
-
-// app.get('/api/v1/tours/:id', getTour);
-// app.patch('/api/v1/tours/:id', updateTour);
-// app.delete('/api/v1/tours/:id', deleteTour);
-
-//Route handling with route method
-//Routes
-app.get('/home', async (req, res) => {
-  const url = `${req.protocol}://${req.get('host')}/`;
-  res.render('index', {
-    url
-  });
-});
-
 app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
@@ -176,15 +143,6 @@ app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/bookings', bookingRouter);
 
 app.all('*', (req, res, next) => {
-  // res.status(404).json({
-  //   status: 'fail',
-  //   message: `Can't find route ${req.originalUrl}`
-  // });
-
-  // const err = new Error(`Can't find route ${req.originalUrl}`);
-  // err.status = 'fail';
-  // err.statusCode = 404;
-
   next(new AppError(`Can't find route ${req.originalUrl}`, 404));
 });
 

@@ -1,6 +1,5 @@
 const Review = require('../models/reviewModel');
 const factory = require('./handlerFactory');
-// const catchAsync = require('../utils/catchAsync');
 
 exports.setTourUserId = (req, res, next) => {
   if (!req.body.user) req.body.user = req.user._id;

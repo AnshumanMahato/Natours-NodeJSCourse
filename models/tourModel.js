@@ -142,11 +142,6 @@ tourSchema.pre('save', function(next) {
   next();
 });
 
-// tourSchema.post('save', function(doc, next) {
-//   console.log(doc);
-//   next();
-// });
-
 //Query Middleware: runs at find()
 tourSchema.pre(/^find/, function(next) {
   this.find({ secretTour: { $ne: true } }).populate({
@@ -161,8 +156,6 @@ tourSchema.pre(/^find/, function(next) {
 //Aggregate Middleware: runs on aggregate()
 tourSchema.pre('aggregate', function(next) {
   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
-
-  // console.log(this.pipeline());
   next();
 });
 
